@@ -13,8 +13,9 @@ from nupic.encoders.random_distributed_scalar import \
 _NUM_RECORDS = 14400
 
 _WORK_DIR = os.getcwd()
-_INPUT_FILE_PATH = os.path.join(_WORK_DIR, "dataset", "eyeState14400.csv")
-_PARAMS_PATH = os.path.join(_WORK_DIR, "params", "modelEyeState128.yaml")
+_INPUT_FILE_PATH = os.path.join(_WORK_DIR, "dataset",
+                                "eyeState14400.csv")
+_PARAMS_PATH = os.path.join(_WORK_DIR, "params", "modelEyeState.yaml")
 
 print _INPUT_FILE_PATH
 print _PARAMS_PATH
