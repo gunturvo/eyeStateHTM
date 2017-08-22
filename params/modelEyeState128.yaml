@@ -195,7 +195,7 @@ modelParams:
     spatialImp: cpp
     globalInhibition: 1
     localAreaDensity: -1.0
-    numActiveColumnsPerInhArea: 40
+    numActiveColumnsPerInhArea: 3
     seed: 1956
     potentialPct: 0.85
     synPermConnected: 0.1
