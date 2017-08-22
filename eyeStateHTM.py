@@ -93,7 +93,7 @@ tm = TemporalMemory(
 )
 
 classifier = SDRClassifierFactory.create()
-wrongDetect = 0
+postvDetect = 0
 
 with open(_INPUT_FILE_PATH, "r") as fin:
     reader = csv.reader(fin)
@@ -192,9 +192,11 @@ with open(_INPUT_FILE_PATH, "r") as fin:
             zip(classifierResult[1], classifierResult["actualValues"]),
             reverse=True
         )[0]
+
+        if (sensEyeDetection == oneStep):
+            postvDetect += 1
+
         print("{:5}\t{:4}\t{:4}\t{:4.4}%".format(count, sensEyeDetection,
               oneStep, oneStepConfidence * 100))
-        if (sensEyeDetection == oneStep):
-            wrongDetect += 1
 
-print (float(wrongDetect) / _NUM_RECORDS) * 100
+print (float(postvDetect) / _NUM_RECORDS)
