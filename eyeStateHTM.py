@@ -165,19 +165,15 @@ with open(_INPUT_FILE_PATH, "r") as fin:
 
         activeColumns = numpy.zeros(spParams["columnCount"])
 
-        # Execute Spatial Pooling algorithm over input space.
         sp.compute(encoding, True, activeColumns)
         activeColumnIndices = numpy.nonzero(activeColumns)[0]
 
-        # Execute Temporal Memory algorithm over active mini-columns.
         tm.compute(activeColumnIndices, learn=True)
 
         activeCells = tm.getActiveCells()
 
-        # Get the bucket info for this input value for classification.
         bucketIdx = encoderEyeDetection.getBucketIndices(sensEyeDetection)[0]
 
-        # Run classifier to translate active cells back to scalar value.
         classifierResult = classifier.compute(
             recordNum=count,
             patternNZ=activeCells,
