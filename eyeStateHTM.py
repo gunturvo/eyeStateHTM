@@ -17,9 +17,6 @@ _INPUT_FILE_PATH = os.path.join(_WORK_DIR, "dataset",
                                 "eyeState14400.csv")
 _PARAMS_PATH = os.path.join(_WORK_DIR, "params", "modelEyeState.yaml")
 
-print _INPUT_FILE_PATH
-print _PARAMS_PATH
-
 with open(_PARAMS_PATH, "r") as f:
     modelParams = yaml.safe_load(f)["modelParams"]
     enParams = modelParams["sensorParams"]["encoders"]
