@@ -10,6 +10,8 @@ from nupic.algorithms.temporal_memory import TemporalMemory
 from nupic.encoders.random_distributed_scalar import \
     RandomDistributedScalarEncoder
 
+start = time.time()
+
 _NUM_RECORDS = 14400
 
 _WORK_DIR = os.getcwd()
@@ -49,10 +51,6 @@ encodingWidth = (encoderAF3.getWidth() + encoderF7.getWidth() +
                  encoderF8.getWidth() + encoderAF4.getWidth() +
                  encoderEyeDetection.getWidth())
 
-print encodingWidth
-
-start = time.time()
-
 sp = SpatialPooler(
     inputDimensions=(encodingWidth,),
     columnDimensions=(spParams["columnCount"],),
@@ -68,11 +66,6 @@ sp = SpatialPooler(
     seed=spParams["seed"],
     wrapAround=False
 )
-
-end = time.time()
-hours, rem = divmod(end - start, 3600)
-minutes, seconds = divmod(rem, 60)
-print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds))
 
 tm = TemporalMemory(
     columnDimensions=(tmParams["columnCount"],),
@@ -194,3 +187,9 @@ with open(_INPUT_FILE_PATH, "r") as fin:
               oneStep, oneStepConfidence * 100))
 
 print (float(postvDetect) / _NUM_RECORDS)
+
+end = time.time()
+hours, rem = divmod(end - start, 3600)
+minutes, seconds = divmod(rem, 60)
+print("Execution time : {:0>2}:{:0>2}:{:05.2f}"
+      .format(int(hours), int(minutes), seconds))
