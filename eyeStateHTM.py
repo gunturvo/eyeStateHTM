@@ -10,15 +10,14 @@ from nupic.algorithms.temporal_memory import TemporalMemory
 from nupic.encoders.random_distributed_scalar import \
     RandomDistributedScalarEncoder
 
+start = time.time()
+
 _NUM_RECORDS = 14400
 
 _WORK_DIR = os.getcwd()
 _INPUT_FILE_PATH = os.path.join(_WORK_DIR, "dataset",
                                 "eyeState14400.csv")
 _PARAMS_PATH = os.path.join(_WORK_DIR, "params", "modelEyeState.yaml")
-
-print _INPUT_FILE_PATH
-print _PARAMS_PATH
 
 with open(_PARAMS_PATH, "r") as f:
     modelParams = yaml.safe_load(f)["modelParams"]
@@ -52,10 +51,6 @@ encodingWidth = (encoderAF3.getWidth() + encoderF7.getWidth() +
                  encoderF8.getWidth() + encoderAF4.getWidth() +
                  encoderEyeDetection.getWidth())
 
-print encodingWidth
-
-start = time.time()
-
 sp = SpatialPooler(
     inputDimensions=(encodingWidth,),
     columnDimensions=(spParams["columnCount"],),
@@ -71,11 +66,6 @@ sp = SpatialPooler(
     seed=spParams["seed"],
     wrapAround=False
 )
-
-end = time.time()
-hours, rem = divmod(end - start, 3600)
-minutes, seconds = divmod(rem, 60)
-print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds))
 
 tm = TemporalMemory(
     columnDimensions=(tmParams["columnCount"],),
@@ -165,19 +155,15 @@ with open(_INPUT_FILE_PATH, "r") as fin:
 
         activeColumns = numpy.zeros(spParams["columnCount"])
 
-        # Execute Spatial Pooling algorithm over input space.
         sp.compute(encoding, True, activeColumns)
         activeColumnIndices = numpy.nonzero(activeColumns)[0]
 
-        # Execute Temporal Memory algorithm over active mini-columns.
         tm.compute(activeColumnIndices, learn=True)
 
         activeCells = tm.getActiveCells()
 
-        # Get the bucket info for this input value for classification.
         bucketIdx = encoderEyeDetection.getBucketIndices(sensEyeDetection)[0]
 
-        # Run classifier to translate active cells back to scalar value.
         classifierResult = classifier.compute(
             recordNum=count,
             patternNZ=activeCells,
@@ -201,3 +187,9 @@ with open(_INPUT_FILE_PATH, "r") as fin:
               oneStep, oneStepConfidence * 100))
 
 print (float(postvDetect) / _NUM_RECORDS)
+
+end = time.time()
+hours, rem = divmod(end - start, 3600)
+minutes, seconds = divmod(rem, 60)
+print("Execution time : {:0>2}:{:0>2}:{:05.2f}"
+      .format(int(hours), int(minutes), seconds))
