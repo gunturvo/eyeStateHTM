@@ -8,7 +8,7 @@ EyeStateHTM is companion software for my bachelor's degree final project titled 
 
 ### Installing EyeStateHTM from Source
  1. Clone this repo
- 2. `pip install .` from repository root - install dependencies
+ 2. `pip install -r requirements.txt` from repository root - install dependencies
 
 ### Run
 Open terminal from repository root:
