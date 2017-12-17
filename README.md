@@ -3,7 +3,8 @@ EyeStateHTM is companion software for my bachelor's degree final project titled 
 
 ### Dependencies
  - [Python 2.7](https://www.python.org/downloads/)
- - [nupic](https://github.com/numenta/nupic)
+ - [NuPIC](https://github.com/numenta/nupic)
+ - [Jupyter Notebook](http://jupyter.org/) - _only needed for demo purposes_
 
 ### Installing EyeStateHTM from Source
  1. Clone this repo
@@ -11,9 +12,11 @@ EyeStateHTM is companion software for my bachelor's degree final project titled 
 
 ### Run
 Open terminal from repository root:
-
-    python eyeStateHTM.py
+```
+python eyeStateHTM.py
+```
 or
-
-    jupyter notebook
+```
+jupyter notebook
+```
 and choose `eyeStateDemo.ipynb` for demo
