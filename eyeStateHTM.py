@@ -1,8 +1,8 @@
 import csv
-import numpy
 import os
-import yaml
 import time
+import numpy
+import yaml
 
 from nupic.algorithms.sdr_classifier_factory import SDRClassifierFactory
 from nupic.algorithms.spatial_pooler import SpatialPooler
@@ -10,13 +10,12 @@ from nupic.algorithms.temporal_memory import TemporalMemory
 from nupic.encoders.random_distributed_scalar import \
     RandomDistributedScalarEncoder
 
-start = time.time()
+startTime = time.time()
 
-_NUM_RECORDS = 14400
+numRecords = 14400
 
 _WORK_DIR = os.getcwd()
-_INPUT_FILE_PATH = os.path.join(_WORK_DIR, "dataset",
-                                "eyeState14400.csv")
+_INPUT_FILE_PATH = os.path.join(_WORK_DIR, "dataset", "eyeState14400.csv")
 _PARAMS_PATH = os.path.join(_WORK_DIR, "params", "modelEyeState.yaml")
 
 with open(_PARAMS_PATH, "r") as f:
@@ -84,7 +83,7 @@ tm = TemporalMemory(
 )
 
 classifier = SDRClassifierFactory.create()
-postvDetect = 0
+detectPositive = 0
 
 with open(_INPUT_FILE_PATH, "r") as fin:
     reader = csv.reader(fin)
@@ -94,7 +93,7 @@ with open(_INPUT_FILE_PATH, "r") as fin:
 
     for count, record in enumerate(reader):
 
-        if count >= _NUM_RECORDS:
+        if count >= numRecords:
             break
 
         sensAF3 = float(record[0])
@@ -180,16 +179,16 @@ with open(_INPUT_FILE_PATH, "r") as fin:
             reverse=True
         )[0]
 
-        if (sensEyeDetection == oneStep):
-            postvDetect += 1
+        if sensEyeDetection == oneStep:
+            detectPositive += 1
 
-        print("{:5}\t{:4}\t{:4}\t{:4.4}%".format(count, sensEyeDetection,
-              oneStep, oneStepConfidence * 100))
+        print "{:5}\t{:4}\t{:4}\t{:4.4}%". \
+            format(count, sensEyeDetection, oneStep, oneStepConfidence * 100)
 
-print (float(postvDetect) / _NUM_RECORDS)
+print float(detectPositive) / numRecords
 
-end = time.time()
-hours, rem = divmod(end - start, 3600)
-minutes, seconds = divmod(rem, 60)
+endTime = time.time()
+hours, remaining = divmod(endTime - startTime, 3600)
+minutes, seconds = divmod(remaining, 60)
 print("Execution time : {:0>2}:{:0>2}:{:05.2f}"
       .format(int(hours), int(minutes), seconds))
